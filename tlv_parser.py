@@ -16,7 +16,7 @@ class Data:
 
 
 def bitstring_to_bytes(s: str) -> bytes:
-    """ :raises OverflowError if len(s) is not a multiple of 8: """
+    """ :raises OverflowError: if len(s) is not a multiple of 8 """
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
 
 
@@ -25,7 +25,7 @@ class DecodeError(Exception):
 
 
 def decode_data(bytes_stream: bytes, data_type: Type):
-    """ :raises NotImplementedError - TODO delete:"""
+    """ :raises NotImplementedError: TODO delete"""
 
     data = Data(data_type, None)
     if data_type == Type.BOOL:
@@ -39,6 +39,8 @@ def decode_data(bytes_stream: bytes, data_type: Type):
 
 
 def decode_tlv(bytes_stream: bytes):
+    """ :param bytes_stream: list of 8 """
+
     i = 0
 
     classification_byte = bytes_stream[i]
@@ -59,6 +61,8 @@ def decode_tlv(bytes_stream: bytes):
                 if bytes_stream[i] & 128 == 0:
                     break
                 i += 1
+
+    # TODO - add different class of types and constructed
     data_type = Type(type_number)
 
     i += 1
