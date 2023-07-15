@@ -1,40 +1,31 @@
 from abc import ABC
 from dataclasses import dataclass
-from enum import IntEnum
-from typing import TypeVar, Union
-
-
-class PublicType(IntEnum):
-    """ TLV public data types """
-    BOOL = 1
-    STRING = 2
-
-
-class PrimitiveTypes(IntEnum):
-    REQUEST = 0
-    RFU = 1
-    CO1 = 2
-
-
-class ConstructedTypes(IntEnum):
-    ALL = 0
-    VELOCITY = 1
-    ANGULAR_VELOCITY = 2
-    POSITION = 3
-    ANGLE = 4
-
+from typing import TypeVar, Union, Any
 
 ValueT = TypeVar('ValueT', int, float)  # Must be int or float
 
+BasicT = TypeVar('BasicT', int, float, str)  # for primitive type
 
-# bad design, too much coupling, TODO - redo
+
 @dataclass
 class IMessage(ABC):
-    type: Union[ConstructedTypes, PrimitiveTypes]
+    pass
 
 
 @dataclass
-class ConstructedMessage(IMessage):
+class BasicMessage(IMessage):
+    data: BasicT
+
+
+@dataclass
+class VelocityMessage(IMessage):
+    x: ValueT
+    y: ValueT
+    z: ValueT
+
+
+@dataclass
+class AngularVelocityMessage(IMessage):
     x: ValueT
     y: ValueT
     z: ValueT
