@@ -1,31 +1,29 @@
-from abc import ABC
 from dataclasses import dataclass
-from typing import TypeVar, Union, Any
-
-ValueT = TypeVar('ValueT', int, float)  # Must be int or float
-
-BasicT = TypeVar('BasicT', int, float, str)  # for primitive type
+from typing import TypeVar
 
 
-@dataclass
-class IMessage(ABC):
-    pass
+""" Type of message """
+MessageT = TypeVar("MessageT",
+                   type(bool),
+                   int,
+                   str,
+                   float,
+                   'VelocityMessage',
+                   'AngularVelocityMessage'
+                   )
+
+_ValueT = TypeVar('_ValueT', int, float)
 
 
-@dataclass
-class BasicMessage(IMessage):
-    data: BasicT
+@dataclass(eq=True, frozen=True)
+class VelocityMessage:
+    x: _ValueT
+    y: _ValueT
+    z: _ValueT
 
 
-@dataclass
-class VelocityMessage(IMessage):
-    x: ValueT
-    y: ValueT
-    z: ValueT
-
-
-@dataclass
-class AngularVelocityMessage(IMessage):
-    x: ValueT
-    y: ValueT
-    z: ValueT
+@dataclass(eq=True, frozen=True)
+class AngularVelocityMessage:
+    x: _ValueT
+    y: _ValueT
+    z: _ValueT
